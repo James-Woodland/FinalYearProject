@@ -1,5 +1,6 @@
 from scapy.all import *
 import psycopg2
+from datetime import datetime
 def test(pkt):
     try:
         #UDP
@@ -17,6 +18,14 @@ def test(pkt):
             print("IP Header Length: " +str(pkt[IP].ihl * 4))
             print("Datagram Length: " +str(pkt[IP].len))        
             print("Protocol: " + str(pkt[IP].proto))
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO udp (TimeStamp, SMac, DMac, SIp, DIp, SPort, DPort, TTL, TOS, ID, IHL, DLen, Proto) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (datetime.now(), pkt.src, pkt.dst, pkt[IP].src
+                                                                                                                                                                                          , pkt[IP].dst, pkt[IP].sport, pkt[IP].dport,
+                                                                                                                                                                                          pkt[IP].ttl, pkt[IP].tos, pkt[IP].id, pkt[IP].ihl * 4,
+                                                                                                                                                                                          pkt[IP].len, pkt[IP].proto))
+            conn.commit()
+            cursor.close()
+            
         #TCP
         elif pkt[IP].proto == 6:
             print(ls(pkt))
@@ -32,6 +41,14 @@ def test(pkt):
             print("IP Header Length: " +str(pkt[IP].ihl * 4))
             print("Datagram Length: " +str(pkt[IP].len))        
             print("Protocol: " + str(pkt[IP].proto))
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO tcp (TimeStamp, SMac, DMac, SIp, DIp, SPort, DPort, TTL, TOS, ID, IHL, DLen, Proto) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (datetime.now(), pkt.src, pkt.dst, pkt[IP].src
+                                                                                                                                                                                          , pkt[IP].dst, pkt[IP].sport, pkt[IP].dport,
+                                                                                                                                                                                          pkt[IP].ttl, pkt[IP].tos, pkt[IP].id, pkt[IP].ihl * 4,
+                                                                                                                                                                                          pkt[IP].len, pkt[IP].proto))
+            conn.commit()
+            cursor.close()
+            
         #IGMP
         elif pkt[IP].proto == 2:
             print(ls(pkt))
@@ -44,7 +61,15 @@ def test(pkt):
             print("ID: " +str(pkt[IP].id))
             print("IP Header Length: " +str(pkt[IP].ihl * 4))
             print("Datagram Length: " +str(pkt[IP].len))        
-            print("Protocol: " + str(pkt[IP].proto))            
+            print("Protocol: " + str(pkt[IP].proto))
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO igmp (TimeStamp, SMac, DMac, SIp, DIp, TTL, TOS, ID, IHL, DLen, Proto) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (datetime.now(), pkt.src, pkt.dst, pkt[IP].src
+                                                                                                                                                                                          , pkt[IP].dst, 
+                                                                                                                                                                                          pkt[IP].ttl, pkt[IP].tos, pkt[IP].id, pkt[IP].ihl * 4,
+                                                                                                                                                                                          pkt[IP].len, pkt[IP].proto))
+            conn.commit() 
+            cursor.close()
+            
         else:
             print(ls(pkt))
             print("Source MAC: " + pkt.src)
@@ -61,7 +86,7 @@ def test(pkt):
             print("Protocol: " + str(pkt[IP].proto))            
             test = input()
         #print("Source MAC: " +pkt.sniffed_on)
-    except:
+    except Exception  as e:
         if hasattr(pkt, "hwdst"):
             #ARP
             print(ls(pkt))
@@ -71,11 +96,17 @@ def test(pkt):
             print(pkt.hwdst)
             print(pkt.pdst)
             print(pkt.psrc)
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO arp (TimeStamp, SMac, DMac, hwsrc, hwdst, PSrc, PDst) VALUES(%s, %s, %s, %s, %s, %s, %s)", (datetime.now(), pkt.src, pkt.dst, pkt.hwsrc, pkt.hwdst, pkt.pdst, pkt.psrc))
+            conn.commit()
+            cursor.close()
+            
         else:
             print(ls(pkt))
+            print(e)
             test = input()
 try:
-    conn = psycopg2.connect("dbname='flare' user='postgres' host='192.168.0.25' password='Crimson1712!'")
+    conn = psycopg2.connect("dbname='flare' user='postgres' host='192.168.0.25' password='test123'")
 except Exception as e:
     print("I am unable to connect to the database")
     print(e)
