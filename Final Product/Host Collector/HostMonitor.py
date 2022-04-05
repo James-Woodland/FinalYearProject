@@ -1,7 +1,7 @@
 from vcgencmd import Vcgencmd
 import os
 import psycopg2
-from datetime import datetime
+from datetime import datetime, timezone
 from getmac import get_mac_address as gma
 import time
 import joblib
@@ -35,7 +35,7 @@ def getHostData(conn, cur, Model):
             break
 
     label = Model.predict([[totalMemUsage, temp, tasks[1], volts, cpu]])
-    cur.execute("INSERT INTO HOSTDATA (TimeStamp, totalRam, usedRam, cpuPercent, cpuTemp, cpuVolts, totalTasks, runningTasks, sleepingTasks, stoppedTasks, ZombieTasks, mac, label) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", (datetime.now(), totalMem, totalMemUsage, cpu, temp, volts, tasks[1], tasks[5],tasks[7],tasks[11],tasks[15], gma(), int(label[0])))
+    cur.execute("INSERT INTO HOSTDATA (TimeStamp, totalRam, usedRam, cpuPercent, cpuTemp, cpuVolts, totalTasks, runningTasks, sleepingTasks, stoppedTasks, ZombieTasks, mac, label) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", (datetime.now(timezone.utc), totalMem, totalMemUsage, cpu, temp, volts, tasks[1], tasks[5],tasks[7],tasks[11],tasks[15], gma(), int(label[0])))
     conn.commit()
     
 
@@ -53,7 +53,11 @@ cur = conn.cursor()
 #l = task.LoopingCall(getHostData)
 #l.start(5.0)
 #reactor.run()
-Model = joblib.load("HostDataModel.pkl")
+path = os.path.realpath(__file__)
+path = path.split("/")
+path = path[:-1]
+path = "/".join(path)
+Model = joblib.load(path+"/HostDataModel.pkl")
 try:
     while True:
         start_time = time.time()

@@ -1,0 +1,1 @@
+Scaffold-DbContext "Server=socem1.uopnet.plymouth.ac.uk;Database=PRCO204_LogicalError;User Id=PRCO204_LogicalError; Password=L0g1c!" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Tables CustomerAccount, Orders, Permission, Product, OrderItems, ProductType, StaffAccount, StaffPosition -f
