@@ -15,9 +15,7 @@ import json
 def test(pkt):
     try:
         if (pkt[IP].proto == 17 or pkt[IP].proto == 6):
-            IP1 = pkt[IP].src.split(".")
-            IP2 = pkt[IP].dst.split(".")
-            label = Model.predict([[pkt.sport, pkt.dport, int(IP1[0]), int(IP1[1]), int(IP1[2]), int(IP1[3]), int(IP2[0]), int(IP2[1]), int(IP2[2]), int(IP2[3])]])
+            label = Model.predict([[pkt.sport, pkt.dport]])
             #print(label[0])
             #print("*********************************************************************")
             #print(ls(pkt))
@@ -124,13 +122,13 @@ if __name__ == "__main__":
     setup = json.load(f)
     print(setup)
     GrafanaKey = setup["Grafana"]["APIKey"]
-    grafanaip = setup["Grafana"]["IP"]
-    grafanaport = setup["Grafana"]["Port"]
-    dbname = setup["Database"]["DBName"]
-    user = setup["Database"]["DBUser"]
-    dbip = setup["Database"]["DBHost"]
-    dbport = setup["Database"]["DBPort"]  
-    password = setup["Database"]["DBPassword"]
+    grafanaip = "localhost"
+    grafanaport = "3000"
+    dbname = "pulse"
+    user = "grafana"
+    dbip = "localhost"
+    dbport = "5432"  
+    password = "test123"
     grafanaApi = GrafanaFace(auth=GrafanaKey, host='{}:{}'.format(grafanaip, grafanaport))
     IPAddr, MACAddr, Vendors = main()
     datasourceGenerator(dbname, dbip, dbport, password, user, grafanaApi, grafanaip, grafanaport)
