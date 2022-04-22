@@ -15,6 +15,8 @@ import json
 def test(pkt):
     try:
         if (pkt[IP].proto == 17 or pkt[IP].proto == 6):
+            ports = [[pkt.sport, pkt.dport]]
+            ports = Scaler.fit_transform(ports)
             label = Model.predict([[pkt.sport, pkt.dport]])
             #print(label[0])
             #print("*********************************************************************")
@@ -124,9 +126,9 @@ if __name__ == "__main__":
     GrafanaKey = setup["Grafana"]["APIKey"]
     grafanaip = "localhost"
     grafanaport = "3000"
-    dbname = "pulse"
-    user = "grafana"
-    dbip = "localhost"
+    dbname = "flare"
+    user = "postgres"
+    dbip = "192.168.0.11"
     dbport = "5432"  
     password = "test123"
     grafanaApi = GrafanaFace(auth=GrafanaKey, host='{}:{}'.format(grafanaip, grafanaport))
@@ -134,7 +136,8 @@ if __name__ == "__main__":
     datasourceGenerator(dbname, dbip, dbport, password, user, grafanaApi, grafanaip, grafanaport)
     for i in range(len(IPAddr)):
         dashboardGenerator(MACAddr[i], IPAddr[i], Vendors[i], grafanaApi)
-    Model = joblib.load("NetDataModel.pkl")
+    Model = joblib.load("StackingPort.pkl")
+    Scaler = joblib.load("PortScaler.pkl")
     try:
         conn = psycopg2.connect("dbname='{}' user='{}' host=\'{}\' password='{}'".format(dbname, user, dbip, password))
         #print("Connection Successful")
