@@ -16,8 +16,10 @@ def test(pkt):
     try:
         if (pkt[IP].proto == 17 or pkt[IP].proto == 6):
             ports = [[pkt.sport, pkt.dport]]
-            ports = Scaler.fit_transform(ports)
-            label = Model.predict([[pkt.sport, pkt.dport]])
+            ports = Scaler.transform(ports)
+            label = Model.predict(ports)
+            print([pkt.sport, pkt.dport])
+            print(label)
             #print(label[0])
             #print("*********************************************************************")
             #print(ls(pkt))
@@ -30,8 +32,8 @@ def test(pkt):
             cursor.close()
             
     except Exception as e:
-        ls(pkt)
-        print(e)
+        #ls(pkt)
+        #print(e)
         pass
         
 def main():
@@ -136,7 +138,7 @@ if __name__ == "__main__":
     datasourceGenerator(dbname, dbip, dbport, password, user, grafanaApi, grafanaip, grafanaport)
     for i in range(len(IPAddr)):
         dashboardGenerator(MACAddr[i], IPAddr[i], Vendors[i], grafanaApi)
-    Model = joblib.load("StackingPort.pkl")
+    Model = joblib.load("../AI Development/StackingPort.pkl")
     Scaler = joblib.load("PortScaler.pkl")
     try:
         conn = psycopg2.connect("dbname='{}' user='{}' host=\'{}\' password='{}'".format(dbname, user, dbip, password))
