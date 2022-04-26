@@ -18,8 +18,8 @@ def test(pkt):
             ports = [[pkt.sport, pkt.dport]]
             ports = Scaler.transform(ports)
             label = Model.predict(ports)
-            print([pkt.sport, pkt.dport])
-            print(label)
+            #print([pkt.sport, pkt.dport])
+            #print(label)
             #print(label[0])
             #print("*********************************************************************")
             #print(ls(pkt))
