@@ -38,7 +38,8 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]]
+![Product Name Screen Shot][product-screenshot1]
+![Product Name Screen Shot][product-screenshot2]
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -103,4 +104,5 @@ Project Link: [https://github.com/James-Woodland/FinalYearProject](https://githu
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/james-woodland-0a03991967
-[product-screenshot]: Images/Screenshot.png
+[product-screenshot1]: Images/NetDataDash.png
+[product-screenshot2]: Images/HostDataDash.png
