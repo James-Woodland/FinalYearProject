@@ -65,21 +65,42 @@ CREATE TABLE IF NOT EXISTS POWER (
    Power Numeric(7,4)
 );
 
-CREATE TABLE IF NOT EXISTS HOSTDATA (
-   PK serial primary key,
-   TimeStamp Timestamp,
-   totalRam int,
-   usedRam int,
-   cpuPercent decimal,
-   cpuTemp decimal,
-   cpuVolts decimal,
-   totalTasks int,
-   runningTasks int,
-   sleepingTasks int,
-   stoppedTasks int, 
-   zombieTasks int
+CREATE TABLE hostdata (
+    pk integer NOT NULL,
+    "timestamp" timestamp without time zone,
+    totalram integer,
+    usedram integer,
+    cpupercent numeric,
+    cputemp numeric,
+    cpuvolts numeric,
+    totaltasks integer,
+    runningtasks integer,
+    sleepingtasks integer,
+    stoppedtasks integer,
+    zombietasks integer,
+    mac character varying,
+    label integer
 );
+
 db name  = flare
 user = postgres
 host = 192.168.0.209
 password = test123
+
+CREATE TABLE networkdata (
+    pk serial NOT NULL,
+    "timestamp" timestamp without time zone,
+    smac character varying(17),
+    dmac character varying(17),
+    sip character varying(15),
+    dip character varying(15),
+    sport integer,
+    dport integer,
+    ttl integer,
+    tos integer,
+    id integer,
+    ihl integer,
+    dlen integer,
+    proto integer,
+    label integer
+);

@@ -1,14 +1,8 @@
 {
-    "Database": {
-        "DBName":"flare",
-        "DBHost":"192.168.0.11",
-        "DBPort":"5432",
-        "DBUser":"postgres",
-        "DBPassword":"test123"
+    "Database": {        
+        "postgresPassword":"test123"
     },
     "Grafana": {
-        "APIKey":"eyJrIjoiY0lwN3VMZ0VHZ1FRN25oZVJvbVdUbEM0OVJ0R2JYT1QiLCJuIjoiZmxhcmUiLCJpZCI6MX0=",
-        "IP":"localhost",
-        "Port":"3000"
+        "APIKey":"eyJrIjoiY0lwN3VMZ0VHZ1FRN25oZVJvbVdUbEM0OVJ0R2JYT1QiLCJuIjoiZmxhcmUiLCJpZCI6MX0="
     }
 }

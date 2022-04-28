@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 from getmac import get_mac_address as gma
 import time
 import joblib
+from sklearn import *
 
 def getCPUuse():
     freeCpu = str(os.popen("top -b -n1 | awk '/Cpu\(s\):/ {print $8}'").readline().strip(\
@@ -17,7 +18,7 @@ def getTaskNum():
     Tasks = Tasks.split(" ")
     return(Tasks)
 
-def getHostData(conn, cur, Model):
+def getHostData(conn, cur, Model, Scaler):
     vcgm = Vcgencmd()
     temp = vcgm.measure_temp()
     volts = vcgm.measure_volts("core")
@@ -33,22 +34,23 @@ def getHostData(conn, cur, Model):
             totalMemUsage = line.split()[2]
             totalMem = line.split()[1]
             break
-
-    label = Model.predict([[totalMemUsage, temp, tasks[1], volts, cpu]])
+    data = [[totalMemUsage, temp, tasks[1], volts, cpu]]
+    data = Scaler.transform(data)
+    label = Model.predict(data)
     cur.execute("INSERT INTO HOSTDATA (TimeStamp, totalRam, usedRam, cpuPercent, cpuTemp, cpuVolts, totalTasks, runningTasks, sleepingTasks, stoppedTasks, ZombieTasks, mac, label) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", (datetime.now(timezone.utc), totalMem, totalMemUsage, cpu, temp, volts, tasks[1], tasks[5],tasks[7],tasks[11],tasks[15], gma(), int(label[0])))
     conn.commit()
     
 
 try:        
     conn = psycopg2.connect(
-        host="192.168.0.11",
-        database="flare",
+        host="192.168.0.77",
+        database="pulse",
         user="postgres",
         password="test123")
+    print("connection successful")
         #print("Connection Successfull")
 except Exception as e:
-    print(e)
-        
+    print(e)        
 cur = conn.cursor()
 #l = task.LoopingCall(getHostData)
 #l.start(5.0)
@@ -57,12 +59,16 @@ path = os.path.realpath(__file__)
 path = path.split("/")
 path = path[:-1]
 path = "/".join(path)
-Model = joblib.load(path+"/HostDataModel.pkl")
+Model = joblib.load(path+"/StackingHost.pkl")
+Scaler = joblib.load(path+"/HostScaler.pkl")
 try:
     while True:
-        start_time = time.time()
-        getHostData(conn, cur, Model)
-        time.sleep(5-(time.time()-start_time))
+        try:
+            start_time = time.time()
+            getHostData(conn, cur, Model, Scaler)
+            time.sleep(5-(time.time()-start_time))
+        except:
+            pass
 except Exception as e:
     print(e)
     cur.close()

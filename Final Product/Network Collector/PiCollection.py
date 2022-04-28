@@ -36,8 +36,7 @@ def test(pkt):
         #print(e)
         pass
         
-def main():
-    GrafanaKey = "eyJrIjoiTVFxYmpMTzU3UE5ZcHJkMElLYjJIMkl5Y1NRSTQ3TmoiLCJuIjoiUHVsc2UiLCJpZCI6MX0="
+def main(GrafanaKey):  
     
     TPLinkAddr = {}   
     nmap_path = [r"C:\Program Files (x86)\Nmap\nmap.exe"]
@@ -47,7 +46,7 @@ def main():
     nm = nmap.PortScanner(nmap_search_path = nmap_path)
     
     #print("IoT Scan Started")
-    TestingIPList = [196, 83]
+    TestingIPList = [196, 199]
     for ip in TestingIPList:
         print('192.168.137.'+str(ip))
         scan_result = nm.scan(hosts='192.168.137.'+str(ip), arguments='-sn --max-retries 2')
@@ -124,17 +123,16 @@ def dashboardGenerator(mac, ip, vendor, grafanaApi):
 if __name__ == "__main__":
     f = open("Config.json")
     setup = json.load(f)
-    print(setup)
     GrafanaKey = setup["Grafana"]["APIKey"]
     grafanaip = "localhost"
     grafanaport = "3000"
-    dbname = "flare"
+    dbname = "pulse"
     user = "postgres"
-    dbip = "192.168.0.11"
+    dbip = "localhost"
     dbport = "5432"  
-    password = "test123"
+    password = setup["Database"]["postgresPassword"]
     grafanaApi = GrafanaFace(auth=GrafanaKey, host='{}:{}'.format(grafanaip, grafanaport))
-    IPAddr, MACAddr, Vendors = main()
+    IPAddr, MACAddr, Vendors = main(GrafanaKey)
     datasourceGenerator(dbname, dbip, dbport, password, user, grafanaApi, grafanaip, grafanaport)
     for i in range(len(IPAddr)):
         dashboardGenerator(MACAddr[i], IPAddr[i], Vendors[i], grafanaApi)
