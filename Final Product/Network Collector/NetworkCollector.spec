@@ -1,4 +1,11 @@
 # -*- mode: python ; coding: utf-8 -*-
+from PyInstaller.utils.hooks import collect_dynamic_libs
+from PyInstaller.utils.hooks import collect_submodules
+
+binaries = []
+hiddenimports = []
+binaries += collect_dynamic_libs('scipy')
+hiddenimports += collect_submodules('sklearn')
 
 
 block_cipher = None
@@ -6,9 +13,9 @@ block_cipher = None
 
 a = Analysis(['PiCollection.py'],
              pathex=[],
-             binaries=[],
+             binaries=binaries,
              datas=[],
-             hiddenimports=[],
+             hiddenimports=hiddenimports,
              hookspath=[],
              hooksconfig={},
              runtime_hooks=[],

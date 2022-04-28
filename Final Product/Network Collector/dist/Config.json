@@ -1,0 +1,17 @@
+{
+    "Database": {        
+        "postgresPassword":"test123"
+    },
+    "Grafana": {
+        "APIKey":"eyJrIjoiY0lwN3VMZ0VHZ1FRN25oZVJvbVdUbEM0OVJ0R2JYT1QiLCJuIjoiZmxhcmUiLCJpZCI6MX0="
+    },
+    "NetworkInterface": "{ed755a3b-0df2-4cc4-8242-d1a996dc6d49}",
+    "ScanningSettings":{
+        "Enabled":false,
+        "DeviceIPs":["192.168.137.196", "192.168.137.199"],
+        "OUIs":{
+            "DC:A6:32": "Raspberry PI",
+            "60:1D:9D": "WansView Q5"
+        }
+    }
+}

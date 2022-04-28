@@ -155,7 +155,7 @@ if __name__ == "__main__":
     datasourceGenerator(dbname, dbip, dbport, password, user, grafanaApi, grafanaip, grafanaport)
     for i in range(len(IPAddr)):
         dashboardGenerator(MACAddr[i], IPAddr[i], Vendors[i], grafanaApi)
-    Model = joblib.load("../AI Development/StackingPort.pkl")
+    Model = joblib.load("StackingPort.pkl")
     Scaler = joblib.load("PortScaler.pkl")
     try:
         conn = psycopg2.connect("dbname='{}' user='{}' host=\'{}\' password='{}'".format(dbname, user, dbip, password))
