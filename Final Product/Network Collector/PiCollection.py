@@ -36,34 +36,52 @@ def test(pkt):
         #print(e)
         pass
         
-def main(GrafanaKey):  
-    
-    TPLinkAddr = {}   
+def main(GrafanaKey, fullScan):      
     nmap_path = [r"C:\Program Files (x86)\Nmap\nmap.exe"]
     IPAddr = []
     MACAddr = []
     Vendors = []
     nm = nmap.PortScanner(nmap_search_path = nmap_path)
-    
-    #print("IoT Scan Started")
-    TestingIPList = [196, 199]
-    for ip in TestingIPList:
-        print('192.168.137.'+str(ip))
-        scan_result = nm.scan(hosts='192.168.137.'+str(ip), arguments='-sn --max-retries 2')
-        print(scan_result)
-        result = scan_result["scan"]
-        #print(result)
-        for i in result.keys():     
-            try:
-                if result[i]["addresses"]["mac"][0:8] == "DC:A6:32" or result[i]["addresses"]["mac"][0:8] == "60:1D:9D":
-                    #print(result[i]["addresses"]["mac"])
-                    IPAddr.append(result[i]["addresses"]["ipv4"])
-                    MACAddr.append(result[i]["addresses"]["mac"])
-                    Vendors.append(result[i]["vendor"][result[i]["addresses"]["mac"]])
-                    print(result[i]["vendor"][result[i]["addresses"]["mac"]])
-            except:
-                pass
-    return IPAddr, MACAddr, Vendors
+    if fullScan == True:        
+        #print("IoT Scan Started")        
+        for ip in range(256):
+            #print('192.168.137.'+str(ip))
+            scan_result = nm.scan(hosts='192.168.137.'+str(ip), arguments='-sn --max-retries 2')
+            #print(scan_result)
+            result = scan_result["scan"]
+            #print(result)
+            for i in result.keys():     
+                try:
+                    if result[i]["addresses"]["mac"][0:8] in setup["ScanningSettings"]["OUIs"].keys():
+                        #print(result[i]["addresses"]["mac"])
+                        IPAddr.append(result[i]["addresses"]["ipv4"])
+                        MACAddr.append(result[i]["addresses"]["mac"])
+                        Vendors.append(result[i]["vendor"][result[i]["addresses"]["mac"]])
+                        #print(result[i]["vendor"][result[i]["addresses"]["mac"]])
+                except:
+                    pass
+        return IPAddr, MACAddr, Vendors
+    elif fullScan == False:        
+        IPList = setup["ScanningSettings"]["DeviceIPs"]        
+        for ip in IPList:
+            #print('192.168.137.'+str(ip))
+            scan_result = nm.scan(hosts=ip, arguments='-sn --max-retries 2')
+            #print(scan_result)
+            result = scan_result["scan"]
+            #print(setup["ScanningSettings"]["OUIs"].keys())
+            #print(result)
+            for i in result.keys():     
+                try:
+                    if result[i]["addresses"]["mac"][0:8] in setup["ScanningSettings"]["OUIs"].keys():
+                        #print(result[i]["addresses"]["mac"])
+                        IPAddr.append(result[i]["addresses"]["ipv4"])
+                        MACAddr.append(result[i]["addresses"]["mac"])
+                        Vendors.append(result[i]["vendor"][result[i]["addresses"]["mac"]])
+                        #print(result[i]["vendor"][result[i]["addresses"]["mac"]])
+                except Exception as e:
+                    #print(e)
+                    pass
+        return IPAddr, MACAddr, Vendors
 
 def datasourceGenerator(dbname, dbip, dbport, password, user, grafanaApi, grafanaip, grafanaport):
     query = {
@@ -103,7 +121,7 @@ def datasourceGenerator(dbname, dbip, dbport, password, user, grafanaApi, grafan
         query["queries"][0]["datasourceId"] = r["id"]
         response = requests.post("http://{}:{}/api/tsdb/query".format(grafanaip, grafanaport), data = query)  
     except Exception as e:
-        print(e)
+        #print(e)
         pass
 
 def dashboardGenerator(mac, ip, vendor, grafanaApi):
@@ -131,8 +149,9 @@ if __name__ == "__main__":
     dbip = "localhost"
     dbport = "5432"  
     password = setup["Database"]["postgresPassword"]
+    fullScan = setup["ScanningSettings"]["Enabled"]
     grafanaApi = GrafanaFace(auth=GrafanaKey, host='{}:{}'.format(grafanaip, grafanaport))
-    IPAddr, MACAddr, Vendors = main(GrafanaKey)
+    IPAddr, MACAddr, Vendors = main(GrafanaKey, fullScan)
     datasourceGenerator(dbname, dbip, dbport, password, user, grafanaApi, grafanaip, grafanaport)
     for i in range(len(IPAddr)):
         dashboardGenerator(MACAddr[i], IPAddr[i], Vendors[i], grafanaApi)
@@ -161,5 +180,5 @@ if __name__ == "__main__":
             for ip in IPAddr:
                 hostFilter = hostFilter + " or {}".format(ip)
     print(hostFilter)
-    sniff(session=NetflowSession, iface = r"\Device\NPF_{ed755a3b-0df2-4cc4-8242-d1a996dc6d49}", filter=(hostFilter), prn=test)
+    sniff(session=NetflowSession, iface = r"\Device\NPF_{}".format(setup["NetworkInterface"]), filter=(hostFilter), prn=test)
     

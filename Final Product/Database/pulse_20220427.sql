@@ -147,14 +147,14 @@ COPY public.networkdata (pk, "timestamp", smac, dmac, sip, dip, sport, dport, tt
 -- Name: hostdata_pk_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.hostdata_pk_seq', 225950, true);
+SELECT pg_catalog.setval('public.hostdata_pk_seq', 1, true);
 
 
 --
 -- Name: networkdata_pk_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.networkdata_pk_seq', 459454, true);
+SELECT pg_catalog.setval('public.networkdata_pk_seq', 1, true);
 
 
 --

@@ -1,0 +1,5 @@
+scikit-learn==1.0.1
+getmac
+joblib
+psycopg2
+vcgencmd

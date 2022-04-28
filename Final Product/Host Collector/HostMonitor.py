@@ -6,6 +6,7 @@ from getmac import get_mac_address as gma
 import time
 import joblib
 from sklearn import *
+import json
 
 def getCPUuse():
     freeCpu = str(os.popen("top -b -n1 | awk '/Cpu\(s\):/ {print $8}'").readline().strip(\
@@ -40,13 +41,16 @@ def getHostData(conn, cur, Model, Scaler):
     cur.execute("INSERT INTO HOSTDATA (TimeStamp, totalRam, usedRam, cpuPercent, cpuTemp, cpuVolts, totalTasks, runningTasks, sleepingTasks, stoppedTasks, ZombieTasks, mac, label) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", (datetime.now(timezone.utc), totalMem, totalMemUsage, cpu, temp, volts, tasks[1], tasks[5],tasks[7],tasks[11],tasks[15], gma(), int(label[0])))
     conn.commit()
     
-
+f = open(os.getcwd()+"/Config.json")
+setup = json.load(f)
+databaseIP = setup["Database"]["databaseIP"]
+postgresPassword = setup["Database"]["postgresPassword"]
 try:        
     conn = psycopg2.connect(
-        host="192.168.0.77",
+        host=databaseIP,
         database="pulse",
         user="postgres",
-        password="test123")
+        password=postgresPassword)
     print("connection successful")
         #print("Connection Successfull")
 except Exception as e:

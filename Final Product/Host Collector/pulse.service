@@ -1,0 +1,11 @@
+[Unit]
+Description=Flare host data collection script.
+After=multi-user.target
+
+[Service]
+Type=simple
+Restart=always
+ExecStart=/usr/bin/python3 /home/<UserName>/HostMonitor.py
+
+[Install]
+WantedBy=multi-user.target
