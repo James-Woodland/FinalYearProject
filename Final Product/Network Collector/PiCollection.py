@@ -15,9 +15,16 @@ import json
 def test(pkt):
     try:
         if (pkt[IP].proto == 17 or pkt[IP].proto == 6):
-            ports = [[pkt.sport, pkt.dport]]
-            ports = Scaler.transform(ports)
-            label = Model.predict(ports)
+            #IP1 = pkt[IP].src.split(".")
+            #IP2 = pkt[IP].dst.split(".")
+            #features = [[pkt.sport, pkt.dport, int(IP1[0]), int(IP1[1]), int(IP1[2]), int(IP1[3]), int(IP2[0]), int(IP2[1]), int(IP2[2]), int(IP2[3])]]
+            if "192.168" in pkt[IP].src and "192.168" in pkt[IP].dst:
+                internal = 1
+            else:
+                internal = 0
+            features = [[pkt.sport, pkt.dport, internal]]
+            features = Scaler.transform(features)
+            label = Model.predict(features)
             #print([pkt.sport, pkt.dport])
             #print(label)
             #print(label[0])
@@ -33,10 +40,10 @@ def test(pkt):
             
     except Exception as e:
         #ls(pkt)
-        #print(e)
+        print(e)
         pass
         
-def main(GrafanaKey, fullScan):      
+def deviceScan(fullScan):      
     nmap_path = [r"C:\Program Files (x86)\Nmap\nmap.exe"]
     IPAddr = []
     MACAddr = []
@@ -125,6 +132,13 @@ def datasourceGenerator(dbname, dbip, dbport, password, user, grafanaApi, grafan
         pass
 
 def dashboardGenerator(mac, ip, vendor, grafanaApi):
+    r = grafanaApi.search.search_dashboards(query=ip)
+    print(r)
+    for i in r:        
+        try:
+            grafanaApi.dashboard.delete_dashboard(i["uid"])
+        except:
+            pass
     f = open("Dashboard.json")
     panels = json.load(f)
     panelStr = json.dumps(panels)
@@ -134,7 +148,7 @@ def dashboardGenerator(mac, ip, vendor, grafanaApi):
     myDashboard = {'id': None, 'uid': None, 'title': ip, 'tags': [vendor],"time": {
     "from": "now-5m",
     "to": "now"
-  }, 'timezone': 'browser', "panels": panels,'schemaVersion': 0, 'version': 0, "graphTooltip": 1}
+  }, 'timezone': 'browser', "panels": panels,'schemaVersion': 0, 'version': 0, "graphTooltip": 1, "refresh":"5s"}
     r = grafanaApi.dashboard.update_dashboard({'dashboard': myDashboard, 'overwrite': True, 'isStarred': False})
     
     
@@ -151,12 +165,12 @@ if __name__ == "__main__":
     password = setup["Database"]["postgresPassword"]
     fullScan = setup["ScanningSettings"]["Enabled"]
     grafanaApi = GrafanaFace(auth=GrafanaKey, host='{}:{}'.format(grafanaip, grafanaport))
-    IPAddr, MACAddr, Vendors = main(GrafanaKey, fullScan)
+    IPAddr, MACAddr, Vendors = deviceScan(fullScan)
     datasourceGenerator(dbname, dbip, dbport, password, user, grafanaApi, grafanaip, grafanaport)
     for i in range(len(IPAddr)):
         dashboardGenerator(MACAddr[i], IPAddr[i], Vendors[i], grafanaApi)
-    Model = joblib.load("StackingPort.pkl")
-    Scaler = joblib.load("PortScaler.pkl")
+    Model = joblib.load("Model.pkl")
+    Scaler = joblib.load("Scaler.pkl")
     try:
         conn = psycopg2.connect("dbname='{}' user='{}' host=\'{}\' password='{}'".format(dbname, user, dbip, password))
         #print("Connection Successful")
