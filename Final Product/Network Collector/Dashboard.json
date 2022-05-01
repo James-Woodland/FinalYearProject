@@ -107,7 +107,7 @@
         ],
         "metricColumn": "none",
         "rawQuery": true,
-        "rawSql": "SELECT\n  $__timeGroupAlias(\"timestamp\",$__interval),\n  sum(label) AS \"Alerts\"\nFROM networkdata\nWHERE\n  $__timeFilter(\"timestamp\") and (smac = '60:1d:9d:dd:36:aa' or dmac = '60:1d:9d:dd:36:aa')\nGROUP BY 1\nORDER BY 1",
+        "rawSql": "SELECT\n  $__timeGroupAlias(\"timestamp\",$__interval),\n  sum(label) AS \"Alerts\"\nFROM networkdata\nWHERE\n  $__timeFilter(\"timestamp\") and (smac = 'dc:a6:32:98:ef:c7' or dmac = 'dc:a6:32:98:ef:c7')\nGROUP BY 1\nORDER BY 1",
         "refId": "A",
         "select": [
           [
@@ -204,7 +204,7 @@
         ],
         "metricColumn": "sport",
         "rawQuery": true,
-        "rawSql": "SELECT\n  $__timeGroupAlias(\"timestamp\",24h,0),\n  dport::varchar(255) AS metric,\n  count(dport) AS \"dport\"\nFROM networkdata\nwhere \"timestamp\" >= now() - interval '24 hours' and (smac = '60:1d:9d:dd:36:aa' or dmac = '60:1d:9d:dd:36:aa') and label = 1\nGROUP BY 1,2\nORDER BY 1,2 desc",
+        "rawSql": "SELECT\n  $__timeGroupAlias(\"timestamp\",24h,0),\n  dport::varchar(255) AS metric,\n  count(dport) AS \"dport\"\nFROM networkdata\nwhere \"timestamp\" >= now() - interval '24 hours' and (smac = 'dc:a6:32:98:ef:c7' or dmac = 'dc:a6:32:98:ef:c7') and label = 1\nGROUP BY 1,2\nORDER BY 1,2 desc",
         "refId": "A",
         "select": [
           [
@@ -436,7 +436,7 @@
         ],
         "metricColumn": "none",
         "rawQuery": true,
-        "rawSql": "SELECT\n \"timestamp\",\n  smac,\n  dmac,\n  sip,\n  dip,\n  sport,\n  dport,\n  label\nFROM networkdata\nwhere \"timestamp\" >= now() - interval '24 hours' and (smac = '60:1d:9d:dd:36:aa' or dmac = '60:1d:9d:dd:36:aa') and label = 1\norder by 1 desc\n",
+        "rawSql": "SELECT\n \"timestamp\",\n  smac,\n  dmac,\n  sip,\n  dip,\n  sport,\n  dport,\n  label\nFROM networkdata\nwhere \"timestamp\" >= now() - interval '24 hours' and (smac = 'dc:a6:32:98:ef:c7' or dmac = 'dc:a6:32:98:ef:c7') and label = 1\norder by 1 desc\n",
         "refId": "A",
         "select": [
           [
@@ -532,7 +532,7 @@
         ],
         "metricColumn": "dip",
         "rawQuery": true,
-        "rawSql": "SELECT\n  $__timeGroupAlias(\"timestamp\",24h,0),\n  sip AS metric,\n  count(pk) AS \"pk\"\nFROM networkdata\nWHERE\n  (smac = '60:1d:9d:dd:36:aa' or dmac = '60:1d:9d:dd:36:aa') and label = 1 and (sip != '192.168.137.199')\nGROUP BY 1,2\nORDER BY 1,2",
+        "rawSql": "SELECT\n  $__timeGroupAlias(\"timestamp\",24h,0),\n  sip AS metric,\n  count(pk) AS \"pk\"\nFROM networkdata\nWHERE\n  (smac = 'dc:a6:32:98:ef:c7' or dmac = 'dc:a6:32:98:ef:c7') and label = 1 and (sip != '192.168.137.196')\nGROUP BY 1,2\nORDER BY 1,2",
         "refId": "A",
         "select": [
           [
@@ -628,7 +628,7 @@
         ],
         "metricColumn": "dip",
         "rawQuery": true,
-        "rawSql": "SELECT\n  $__timeGroupAlias(\"timestamp\",24h,0),\n  smac AS metric,\n  count(pk) AS \"pk\"\nFROM networkdata\nWHERE\n  $__timeFilter(\"timestamp\") and (smac = '60:1d:9d:dd:36:aa' or dmac = '60:1d:9d:dd:36:aa') and smac != '60:1d:9d:dd:36:aa'\nGROUP BY 1,2\nORDER BY 1,2",
+        "rawSql": "SELECT\n  $__timeGroupAlias(\"timestamp\",24h,0),\n  smac AS metric,\n  count(pk) AS \"pk\"\nFROM networkdata\nWHERE\n  $__timeFilter(\"timestamp\") and (smac = 'dc:a6:32:98:ef:c7' or dmac = 'dc:a6:32:98:ef:c7') and smac != 'dc:a6:32:98:ef:c7'\nGROUP BY 1,2\nORDER BY 1,2",
         "refId": "A",
         "select": [
           [
@@ -717,7 +717,7 @@
             "mode": "none"
           },
           "thresholdsStyle": {
-            "mode": "off"
+            "mode": "line+area"
           }
         },
         "mappings": [],
@@ -730,7 +730,7 @@
             },
             {
               "color": "red",
-              "value": 80
+              "value": 5
             }
           ]
         }
@@ -746,9 +746,11 @@
     "id": 19,
     "options": {
       "legend": {
-        "calcs": [],
-        "displayMode": "list",
-        "placement": "bottom"
+        "calcs": [
+          "lastNotNull"
+        ],
+        "displayMode": "table",
+        "placement": "right"
       },
       "tooltip": {
         "mode": "single"
@@ -768,7 +770,7 @@
         ],
         "metricColumn": "none",
         "rawQuery": true,
-        "rawSql": "SELECT\n  $__timeGroupAlias(\"timestamp\",$__interval),\n  sum(label) AS \"Alerts\"\nFROM Hostdata\nWHERE\n  $__timeFilter(\"timestamp\") and mac = '60:1d:9d:dd:36:aa'\nGROUP BY 1\nORDER BY 1",
+        "rawSql": "SELECT\n  $__timeGroupAlias(\"timestamp\",$__interval),\n  sum(label) AS \"Alerts\"\nFROM Hostdata\nWHERE\n  $__timeFilter(\"timestamp\") and mac = 'dc:a6:32:98:ef:c7'\nGROUP BY 1\nORDER BY 1",
         "refId": "A",
         "select": [
           [
@@ -902,7 +904,7 @@
         ],
         "metricColumn": "mac",
         "rawQuery": true,
-        "rawSql": "SELECT\n  $__timeGroupAlias(\"timestamp\",5s),\n  sum(usedram*100/totalram) as \"% Ram Used\"\nFROM hostdata\nWHERE\n  $__timeFilter(\"timestamp\") and mac = '60:1d:9d:dd:36:aa'\nGROUP BY 1\nORDER BY 1",
+        "rawSql": "SELECT\n  $__timeGroupAlias(\"timestamp\",5s),\n  sum(usedram*100/totalram) as \"% Ram Used\"\nFROM hostdata\nWHERE\n  $__timeFilter(\"timestamp\") and mac = 'dc:a6:32:98:ef:c7'\nGROUP BY 1\nORDER BY 1",
         "refId": "A",
         "select": [
           [
@@ -1016,7 +1018,7 @@
         "group": [],
         "metricColumn": "none",
         "rawQuery": false,
-        "rawSql": "SELECT\n  \"timestamp\" AS \"time\",\n  cputemp AS \"CPU Temp\"\nFROM hostdata\nWHERE\n  $__timeFilter(\"timestamp\") AND\n  mac = '60:1d:9d:dd:36:aa'\nORDER BY 1",
+        "rawSql": "SELECT\n  \"timestamp\" AS \"time\",\n  cputemp AS \"CPU Temp\"\nFROM hostdata\nWHERE\n  $__timeFilter(\"timestamp\") AND\n  mac = 'dc:a6:32:98:ef:c7'\nORDER BY 1",
         "refId": "A",
         "select": [
           [
@@ -1049,7 +1051,7 @@
             "params": [
               "mac",
               "=",
-              "'60:1d:9d:dd:36:aa'"
+              "'dc:a6:32:98:ef:c7'"
             ],
             "type": "expression"
           }
@@ -1111,7 +1113,7 @@
         "group": [],
         "metricColumn": "none",
         "rawQuery": true,
-        "rawSql": "SELECT\n  \"timestamp\" AS \"time\",\n  runningtasks,\n  stoppedtasks,\n  sleepingtasks,\n  zombietasks\nFROM hostdata\nWHERE\n  $__timeFilter(\"timestamp\") AND\n  mac = '60:1d:9d:dd:36:aa'\nORDER BY 1",
+        "rawSql": "SELECT\n  \"timestamp\" AS \"time\",\n  runningtasks,\n  stoppedtasks,\n  sleepingtasks,\n  zombietasks\nFROM hostdata\nWHERE\n  $__timeFilter(\"timestamp\") AND\n  mac = 'dc:a6:32:98:ef:c7'\nORDER BY 1",
         "refId": "A",
         "select": [
           [
@@ -1162,7 +1164,7 @@
             "params": [
               "mac",
               "=",
-              "'60:1d:9d:dd:36:aa'"
+              "'dc:a6:32:98:ef:c7'"
             ],
             "type": "expression"
           }
@@ -1252,7 +1254,7 @@
         "group": [],
         "metricColumn": "none",
         "rawQuery": false,
-        "rawSql": "SELECT\n  \"timestamp\" AS \"time\",\n  cpupercent AS \"CPU %\"\nFROM hostdata\nWHERE\n  $__timeFilter(\"timestamp\") AND\n  mac = '60:1d:9d:dd:36:aa'\nORDER BY 1",
+        "rawSql": "SELECT\n  \"timestamp\" AS \"time\",\n  cpupercent AS \"CPU %\"\nFROM hostdata\nWHERE\n  $__timeFilter(\"timestamp\") AND\n  mac = 'dc:a6:32:98:ef:c7'\nORDER BY 1",
         "refId": "A",
         "select": [
           [
@@ -1285,7 +1287,7 @@
             "params": [
               "mac",
               "=",
-              "'60:1d:9d:dd:36:aa'"
+              "'dc:a6:32:98:ef:c7'"
             ],
             "type": "expression"
           }
@@ -1373,7 +1375,7 @@
         "group": [],
         "metricColumn": "none",
         "rawQuery": false,
-        "rawSql": "SELECT\n  \"timestamp\" AS \"time\",\n  cpuvolts AS \"CPU Voltage\"\nFROM hostdata\nWHERE\n  $__timeFilter(\"timestamp\") AND\n  mac = '60:1d:9d:dd:36:aa'\nORDER BY 1",
+        "rawSql": "SELECT\n  \"timestamp\" AS \"time\",\n  cpuvolts AS \"CPU Voltage\"\nFROM hostdata\nWHERE\n  $__timeFilter(\"timestamp\") AND\n  mac = 'dc:a6:32:98:ef:c7'\nORDER BY 1",
         "refId": "A",
         "select": [
           [
@@ -1406,7 +1408,7 @@
             "params": [
               "mac",
               "=",
-              "'60:1d:9d:dd:36:aa'"
+              "'dc:a6:32:98:ef:c7'"
             ],
             "type": "expression"
           }
