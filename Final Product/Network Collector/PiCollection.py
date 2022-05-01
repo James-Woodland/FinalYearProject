@@ -131,20 +131,14 @@ def datasourceGenerator(dbname, dbip, dbport, password, user, grafanaApi, grafan
         #print(e)
         pass
 
-def dashboardGenerator(mac, ip, vendor, grafanaApi):
-    r = grafanaApi.search.search_dashboards(query=ip)
-    print(r)
-    for i in r:        
-        try:
-            grafanaApi.dashboard.delete_dashboard(i["uid"])
-        except:
-            pass
+def dashboardGenerator(mac, ip, vendor, grafanaApi):    
     f = open("Dashboard.json")
     panels = json.load(f)
-    panelStr = json.dumps(panels)
+    panelStr = json.dumps(panels)    
     #Update Base Dashboard for the Specific Device
-    newPanelStr = panelStr.replace('dc:a6:32:98:ef:c7', mac.lower())
-    panels = json.loads(newPanelStr)
+    panelStr = panelStr.replace('60:1d:9d:dd:36:aa', mac.lower())
+    panelStr = panelStr.replace('192.168.137.199', ip)    
+    panels = json.loads(panelStr)
     myDashboard = {'id': None, 'uid': None, 'title': ip, 'tags': [vendor],"time": {
     "from": "now-5m",
     "to": "now"
@@ -167,6 +161,12 @@ if __name__ == "__main__":
     grafanaApi = GrafanaFace(auth=GrafanaKey, host='{}:{}'.format(grafanaip, grafanaport))
     IPAddr, MACAddr, Vendors = deviceScan(fullScan)
     datasourceGenerator(dbname, dbip, dbport, password, user, grafanaApi, grafanaip, grafanaport)
+    r = grafanaApi.search.search_dashboards()
+    for i in r:        
+        try:
+            grafanaApi.dashboard.delete_dashboard(i["uid"])
+        except:
+            pass
     for i in range(len(IPAddr)):
         dashboardGenerator(MACAddr[i], IPAddr[i], Vendors[i], grafanaApi)
     Model = joblib.load("Model.pkl")

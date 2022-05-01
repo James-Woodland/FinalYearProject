@@ -40,10 +40,15 @@ def getHostData(conn, cur, Model, Scaler):
     label = Model.predict(data)
     cur.execute("INSERT INTO HOSTDATA (TimeStamp, totalRam, usedRam, cpuPercent, cpuTemp, cpuVolts, totalTasks, runningTasks, sleepingTasks, stoppedTasks, ZombieTasks, mac, label) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", (datetime.now(timezone.utc), totalMem, totalMemUsage, cpu, temp, volts, tasks[1], tasks[5],tasks[7],tasks[11],tasks[15], gma(), int(label[0])))
     conn.commit()
-    
-f = open(os.getcwd()+"/Config.json")
+path = os.path.realpath(__file__)
+path  = path.split("/")
+path = "/".join(path[0:-1])
+f = open(path+"/Config.json")
+
 setup = json.load(f)
+
 databaseIP = setup["Database"]["databaseIP"]
+print(f)
 postgresPassword = setup["Database"]["postgresPassword"]
 try:        
     conn = psycopg2.connect(
