@@ -173,7 +173,7 @@ nssm set PulseNetworkCollector start SERVICE_AUTO_START
 <!-- CONTACT -->
 ## Contact
 
-James Woodland - [@ThatStatGuyZero](https://twitter.com/thatstatguyzero) - email@email_client.com
+James Woodland - [@ThatStatGuyZero](https://twitter.com/thatstatguyzero) - jameswoodland1712@hotmail.co.uk
 
 Project Link: [https://github.com/James-Woodland/FinalYearProject](https://github.com/James-Woodland/FinalYearProject)
 
