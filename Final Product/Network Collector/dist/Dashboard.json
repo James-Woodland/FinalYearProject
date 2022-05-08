@@ -1,1360 +1,1421 @@
 [
-      {
-        "collapsed": false,
-        "datasource": null,
-        "gridPos": {
-          "h": 1,
-          "w": 24,
-          "x": 0,
-          "y": 0
+  {
+    "collapsed": false,
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 1,
+      "w": 24,
+      "x": 0,
+      "y": 0
+    },
+    "id": 13,
+    "panels": [],
+    "title": "Network Data",
+    "type": "row"
+  },
+  {
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {
+        "color": {
+          "mode": "palette-classic"
         },
-        "id": 13,
-        "panels": [],
-        "title": "Network Data",
-        "type": "row"
-      },
-      {
-        "datasource": null,
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "thresholds"
-            },
-            "custom": {
-              "align": "auto",
-              "displayMode": "auto"
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            }
+        "custom": {
+          "axisLabel": "",
+          "axisPlacement": "auto",
+          "barAlignment": 0,
+          "drawStyle": "line",
+          "fillOpacity": 25,
+          "gradientMode": "none",
+          "hideFrom": {
+            "legend": false,
+            "tooltip": false,
+            "viz": false
           },
-          "overrides": [
+          "lineInterpolation": "linear",
+          "lineStyle": {
+            "fill": "solid"
+          },
+          "lineWidth": 1,
+          "pointSize": 15,
+          "scaleDistribution": {
+            "type": "linear"
+          },
+          "showPoints": "always",
+          "spanNulls": false,
+          "stacking": {
+            "group": "A",
+            "mode": "none"
+          },
+          "thresholdsStyle": {
+            "mode": "line+area"
+          }
+        },
+        "mappings": [],
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
             {
-              "matcher": {
-                "id": "byName",
-                "options": "sport"
-              },
-              "properties": [
-                {
-                  "id": "custom.width",
-                  "value": 59
-                }
-              ]
+              "color": "green",
+              "value": null
             },
             {
-              "matcher": {
-                "id": "byName",
-                "options": "dport"
-              },
-              "properties": [
-                {
-                  "id": "custom.width",
-                  "value": 60
-                }
-              ]
+              "color": "red",
+              "value": 5
+            }
+          ]
+        }
+      },
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 7,
+      "w": 12,
+      "x": 0,
+      "y": 1
+    },
+    "id": 27,
+    "interval": "10s",
+    "options": {
+      "legend": {
+        "calcs": [
+          "lastNotNull"
+        ],
+        "displayMode": "table",
+        "placement": "right"
+      },
+      "tooltip": {
+        "mode": "single"
+      }
+    },
+    "pluginVersion": "8.2.5",
+    "targets": [
+      {
+        "format": "time_series",
+        "group": [
+          {
+            "params": [
+              "$__interval",
+              "none"
+            ],
+            "type": "time"
+          }
+        ],
+        "metricColumn": "none",
+        "rawQuery": true,
+        "rawSql": "SELECT\n  $__timeGroupAlias(\"timestamp\",$__interval),\n  sum(label) AS \"Alerts\"\nFROM networkdata\nWHERE\n  $__timeFilter(\"timestamp\") and (smac = 'dc:a6:32:98:ef:c7' or dmac = 'dc:a6:32:98:ef:c7')\nGROUP BY 1\nORDER BY 1",
+        "refId": "A",
+        "select": [
+          [
+            {
+              "params": [
+                "label"
+              ],
+              "type": "column"
             },
             {
-              "matcher": {
-                "id": "byName",
-                "options": "label"
-              },
-              "properties": [
-                {
-                  "id": "custom.width",
-                  "value": 51
-                },
-                {
-                  "id": "custom.displayMode",
-                  "value": "color-background"
-                },
-                {
-                  "id": "thresholds",
-                  "value": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "green",
-                        "value": null
-                      },
-                      {
-                        "color": "red",
-                        "value": 1
-                      }
-                    ]
-                  }
-                }
-              ]
+              "params": [
+                "sum"
+              ],
+              "type": "aggregate"
             },
             {
-              "matcher": {
-                "id": "byName",
-                "options": "smac"
-              },
-              "properties": [
-                {
-                  "id": "custom.width",
-                  "value": 128
-                }
-              ]
+              "params": [
+                "label"
+              ],
+              "type": "alias"
+            }
+          ]
+        ],
+        "table": "networkdata",
+        "timeColumn": "\"timestamp\"",
+        "timeColumnType": "timestamp",
+        "where": [
+          {
+            "name": "$__timeFilter",
+            "params": [],
+            "type": "macro"
+          }
+        ]
+      }
+    ],
+    "title": "Alerts (Per 30 seconds)",
+    "type": "timeseries"
+  },
+  {
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {
+        "color": {
+          "mode": "palette-classic"
+        },
+        "custom": {
+          "hideFrom": {
+            "legend": false,
+            "tooltip": false,
+            "viz": false
+          }
+        },
+        "mappings": []
+      },
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 7,
+      "w": 12,
+      "x": 12,
+      "y": 1
+    },
+    "id": 23,
+    "interval": "24h",
+    "options": {
+      "legend": {
+        "displayMode": "list",
+        "placement": "bottom"
+      },
+      "pieType": "pie",
+      "reduceOptions": {
+        "calcs": [
+          "lastNotNull"
+        ],
+        "fields": "",
+        "values": false
+      },
+      "tooltip": {
+        "mode": "single"
+      }
+    },
+    "pluginVersion": "8.2.5",
+    "targets": [
+      {
+        "format": "time_series",
+        "group": [
+          {
+            "params": [
+              "$__interval",
+              "0"
+            ],
+            "type": "time"
+          }
+        ],
+        "metricColumn": "sport",
+        "rawQuery": true,
+        "rawSql": "SELECT\n  $__timeGroupAlias(\"timestamp\",24h,0),\n  dport::varchar(255) AS metric,\n  count(dport) AS \"dport\"\nFROM networkdata\nwhere \"timestamp\" >= now() - interval '24 hours' and (smac = 'dc:a6:32:98:ef:c7' or dmac = 'dc:a6:32:98:ef:c7') and label = 1\nGROUP BY 1,2\nORDER BY 1,2 desc",
+        "refId": "A",
+        "select": [
+          [
+            {
+              "params": [
+                "sport"
+              ],
+              "type": "column"
             },
             {
-              "matcher": {
-                "id": "byName",
-                "options": "dmac"
-              },
-              "properties": [
-                {
-                  "id": "custom.width",
-                  "value": 129
-                }
-              ]
+              "params": [
+                "count"
+              ],
+              "type": "aggregate"
             },
             {
-              "matcher": {
-                "id": "byName",
-                "options": "sip"
-              },
-              "properties": [
-                {
-                  "id": "custom.width",
-                  "value": 125
-                }
-              ]
+              "params": [
+                "dport"
+              ],
+              "type": "alias"
+            }
+          ]
+        ],
+        "table": "networkdata",
+        "timeColumn": "\"timestamp\"",
+        "timeColumnType": "timestamp",
+        "where": [
+          {
+            "name": "$__timeFilter",
+            "params": [],
+            "type": "macro"
+          },
+          {
+            "datatype": "varchar",
+            "name": "",
+            "params": [
+              "dip",
+              "!=",
+              "'192.168.137.196'"
+            ],
+            "type": "expression"
+          }
+        ]
+      }
+    ],
+    "title": " Suspicious Destination Ports (Last 24 hours)",
+    "type": "piechart"
+  },
+  {
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {
+        "color": {
+          "mode": "thresholds"
+        },
+        "custom": {
+          "align": "auto",
+          "displayMode": "auto"
+        },
+        "mappings": [],
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
             },
             {
-              "matcher": {
-                "id": "byName",
-                "options": "dip"
-              },
-              "properties": [
-                {
-                  "id": "custom.width",
-                  "value": 170
-                }
-              ]
-            },
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "overrides": [
+        {
+          "matcher": {
+            "id": "byName",
+            "options": "sport"
+          },
+          "properties": [
             {
-              "matcher": {
-                "id": "byName",
-                "options": "timestamp"
-              },
-              "properties": [
-                {
-                  "id": "custom.width",
-                  "value": 180
-                }
-              ]
-            },
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "time"
-              },
-              "properties": [
-                {
-                  "id": "custom.width",
-                  "value": null
-                }
-              ]
+              "id": "custom.width",
+              "value": 59
             }
           ]
         },
-        "gridPos": {
-          "h": 24,
-          "w": 12,
-          "x": 0,
-          "y": 1
-        },
-        "id": 21,
-        "options": {
-          "showHeader": true,
-          "sortBy": []
-        },
-        "pluginVersion": "8.2.5",
-        "targets": [
-          {
-            "format": "table",
-            "group": [
-              {
-                "params": [
-                  "$__interval",
-                  "none"
-                ],
-                "type": "time"
-              }
-            ],
-            "metricColumn": "none",
-            "rawQuery": true,
-            "rawSql": "SELECT\n  \"timestamp\",\n  smac,\n  dmac,\n  sip,\n  dip,\n  sport,\n  dport,\n  label\nFROM networkdata\nwhere smac = 'dc:a6:32:98:ef:c7' or dmac = 'dc:a6:32:98:ef:c7'\norder by 1 desc\n",
-            "refId": "A",
-            "select": [
-              [
-                {
-                  "params": [
-                    "label"
-                  ],
-                  "type": "column"
-                },
-                {
-                  "params": [
-                    "sum"
-                  ],
-                  "type": "aggregate"
-                },
-                {
-                  "params": [
-                    "label"
-                  ],
-                  "type": "alias"
-                }
-              ]
-            ],
-            "table": "networkdata",
-            "timeColumn": "\"timestamp\"",
-            "timeColumnType": "timestamp",
-            "where": [
-              {
-                "name": "$__timeFilter",
-                "params": [],
-                "type": "macro"
-              }
-            ]
-          }
-        ],
-        "title": "Packets",
-        "type": "table"
-      },
-      {
-        "datasource": null,
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "axisLabel": "",
-              "axisPlacement": "auto",
-              "barAlignment": 0,
-              "drawStyle": "line",
-              "fillOpacity": 0,
-              "gradientMode": "none",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "lineInterpolation": "linear",
-              "lineWidth": 1,
-              "pointSize": 5,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "auto",
-              "spanNulls": false,
-              "stacking": {
-                "group": "A",
-                "mode": "none"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
+        {
+          "matcher": {
+            "id": "byName",
+            "options": "dport"
+          },
+          "properties": [
+            {
+              "id": "custom.width",
+              "value": 60
             }
+          ]
+        },
+        {
+          "matcher": {
+            "id": "byName",
+            "options": "label"
           },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 12,
-          "y": 1
-        },
-        "id": 27,
-        "options": {
-          "legend": {
-            "calcs": [],
-            "displayMode": "list",
-            "placement": "bottom"
-          },
-          "tooltip": {
-            "mode": "single"
-          }
-        },
-        "targets": [
-          {
-            "format": "time_series",
-            "group": [
-              {
-                "params": [
-                  "$__interval",
-                  "none"
-                ],
-                "type": "time"
-              }
-            ],
-            "metricColumn": "none",
-            "rawQuery": true,
-            "rawSql": "SELECT\n  $__timeGroupAlias(\"timestamp\",$__interval),\n  sum(label) AS \"label\"\nFROM networkdata\nWHERE\n  $__timeFilter(\"timestamp\") and (smac = 'dc:a6:32:98:ef:c7' or dmac = 'dc:a6:32:98:ef:c7')\nGROUP BY 1\nORDER BY 1",
-            "refId": "A",
-            "select": [
-              [
-                {
-                  "params": [
-                    "label"
-                  ],
-                  "type": "column"
-                },
-                {
-                  "params": [
-                    "sum"
-                  ],
-                  "type": "aggregate"
-                },
-                {
-                  "params": [
-                    "label"
-                  ],
-                  "type": "alias"
-                }
-              ]
-            ],
-            "table": "networkdata",
-            "timeColumn": "\"timestamp\"",
-            "timeColumnType": "timestamp",
-            "where": [
-              {
-                "name": "$__timeFilter",
-                "params": [],
-                "type": "macro"
-              }
-            ]
-          }
-        ],
-        "title": "Alert rate per minute",
-        "type": "timeseries"
-      },
-      {
-        "datasource": null,
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
+          "properties": [
+            {
+              "id": "custom.width",
+              "value": 51
             },
-            "custom": {
-              "axisLabel": "",
-              "axisPlacement": "auto",
-              "barAlignment": 0,
-              "drawStyle": "line",
-              "fillOpacity": 0,
-              "gradientMode": "none",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "lineInterpolation": "linear",
-              "lineWidth": 1,
-              "pointSize": 5,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "auto",
-              "spanNulls": false,
-              "stacking": {
-                "group": "A",
-                "mode": "none"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
+            {
+              "id": "custom.displayMode",
+              "value": "color-background"
             },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
+            {
+              "id": "thresholds",
+              "value": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 1
+                  }
+                ]
+              }
             }
+          ]
+        },
+        {
+          "matcher": {
+            "id": "byName",
+            "options": "smac"
           },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 12,
-          "y": 9
-        },
-        "id": 23,
-        "options": {
-          "legend": {
-            "calcs": [],
-            "displayMode": "list",
-            "placement": "bottom"
-          },
-          "tooltip": {
-            "mode": "single"
-          }
-        },
-        "pluginVersion": "8.2.5",
-        "targets": [
-          {
-            "format": "time_series",
-            "group": [
-              {
-                "params": [
-                  "$__interval",
-                  "0"
-                ],
-                "type": "time"
-              }
-            ],
-            "metricColumn": "dip",
-            "rawQuery": true,
-            "rawSql": "SELECT\n  $__timeGroupAlias(\"timestamp\",$__interval,0),\n  dport::varchar(255) AS metric,\n  count(dport) AS \"dport\"\nFROM networkdata\nwhere \"timestamp\" >= now() - interval '5 minutes' and (smac = 'dc:a6:32:98:ef:c7' or dmac = 'dc:a6:32:98:ef:c7')\nGROUP BY 1,2\nORDER BY 1,2 desc",
-            "refId": "A",
-            "select": [
-              [
-                {
-                  "params": [
-                    "dport"
-                  ],
-                  "type": "column"
-                },
-                {
-                  "params": [
-                    "count"
-                  ],
-                  "type": "aggregate"
-                },
-                {
-                  "params": [
-                    "dport"
-                  ],
-                  "type": "alias"
-                }
-              ]
-            ],
-            "table": "networkdata",
-            "timeColumn": "\"timestamp\"",
-            "timeColumnType": "timestamp",
-            "where": [
-              {
-                "name": "$__timeFilter",
-                "params": [],
-                "type": "macro"
-              },
-              {
-                "datatype": "varchar",
-                "name": "",
-                "params": [
-                  "dip",
-                  "!=",
-                  "'192.168.137.196'"
-                ],
-                "type": "expression"
-              }
-            ]
-          }
-        ],
-        "title": "Destination Ports",
-        "type": "timeseries"
-      },
-      {
-        "datasource": null,
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "axisLabel": "",
-              "axisPlacement": "auto",
-              "barAlignment": 0,
-              "drawStyle": "line",
-              "fillOpacity": 0,
-              "gradientMode": "none",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "lineInterpolation": "linear",
-              "lineWidth": 1,
-              "pointSize": 5,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "auto",
-              "spanNulls": false,
-              "stacking": {
-                "group": "A",
-                "mode": "none"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
+          "properties": [
+            {
+              "id": "custom.width",
+              "value": 128
             }
+          ]
+        },
+        {
+          "matcher": {
+            "id": "byName",
+            "options": "dmac"
           },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 12,
-          "y": 17
-        },
-        "id": 25,
-        "options": {
-          "legend": {
-            "calcs": [],
-            "displayMode": "list",
-            "placement": "bottom"
-          },
-          "tooltip": {
-            "mode": "single"
-          }
-        },
-        "targets": [
-          {
-            "format": "time_series",
-            "group": [
-              {
-                "params": [
-                  "$__interval",
-                  "0"
-                ],
-                "type": "time"
-              }
-            ],
-            "metricColumn": "dip",
-            "rawQuery": true,
-            "rawSql": "SELECT\n  $__timeGroupAlias(\"timestamp\",$__interval,0),\n  dip AS metric,\n  count(pk) AS \"pk\"\nFROM networkdata\nWHERE\n  $__timeFilter(\"timestamp\") and (smac = 'dc:a6:32:98:ef:c7' or dmac = 'dc:a6:32:98:ef:c7')\nGROUP BY 1,2\nORDER BY 1,2",
-            "refId": "A",
-            "select": [
-              [
-                {
-                  "params": [
-                    "pk"
-                  ],
-                  "type": "column"
-                },
-                {
-                  "params": [
-                    "count"
-                  ],
-                  "type": "aggregate"
-                },
-                {
-                  "params": [
-                    "pk"
-                  ],
-                  "type": "alias"
-                }
-              ]
-            ],
-            "table": "networkdata",
-            "timeColumn": "\"timestamp\"",
-            "timeColumnType": "timestamp",
-            "where": [
-              {
-                "name": "$__timeFilter",
-                "params": [],
-                "type": "macro"
-              }
-            ]
-          }
-        ],
-        "title": "Destination IPs",
-        "type": "timeseries"
-      },
-      {
-        "collapsed": false,
-        "datasource": null,
-        "gridPos": {
-          "h": 1,
-          "w": 24,
-          "x": 0,
-          "y": 25
-        },
-        "id": 2,
-        "panels": [],
-        "title": "Host Data",
-        "type": "row"
-      },
-      {
-        "datasource": null,
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              }
-            },
-            "mappings": []
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 0,
-          "y": 26
-        },
-        "id": 4,
-        "options": {
-          "legend": {
-            "displayMode": "table",
-            "placement": "right",
-            "values": [
-              "value"
-            ]
-          },
-          "pieType": "pie",
-          "reduceOptions": {
-            "calcs": [
-              "lastNotNull"
-            ],
-            "fields": "",
-            "values": false
-          },
-          "tooltip": {
-            "mode": "single"
-          }
-        },
-        "pluginVersion": "8.2.5",
-        "targets": [
-          {
-            "format": "table",
-            "group": [],
-            "metricColumn": "none",
-            "rawQuery": true,
-            "rawSql": "SELECT\n  \"timestamp\" AS \"time\",\n  runningtasks,\n  stoppedtasks,\n  sleepingtasks,\n  zombietasks\nFROM hostdata\nWHERE\n  $__timeFilter(\"timestamp\") AND\n  mac = 'dc:a6:32:98:ef:c7'\nORDER BY 1",
-            "refId": "A",
-            "select": [
-              [
-                {
-                  "params": [
-                    "runningtasks"
-                  ],
-                  "type": "column"
-                }
-              ],
-              [
-                {
-                  "params": [
-                    "stoppedtasks"
-                  ],
-                  "type": "column"
-                }
-              ],
-              [
-                {
-                  "params": [
-                    "sleepingtasks"
-                  ],
-                  "type": "column"
-                }
-              ],
-              [
-                {
-                  "params": [
-                    "zombietasks"
-                  ],
-                  "type": "column"
-                }
-              ]
-            ],
-            "table": "hostdata",
-            "timeColumn": "\"timestamp\"",
-            "timeColumnType": "timestamp",
-            "where": [
-              {
-                "name": "$__timeFilter",
-                "params": [],
-                "type": "macro"
-              },
-              {
-                "datatype": "varchar",
-                "name": "",
-                "params": [
-                  "mac",
-                  "=",
-                  "'dc:a6:32:98:ef:c7'"
-                ],
-                "type": "expression"
-              }
-            ]
-          }
-        ],
-        "title": "Task Distribution",
-        "type": "piechart"
-      },
-      {
-        "datasource": null,
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "axisLabel": "",
-              "axisPlacement": "auto",
-              "barAlignment": 0,
-              "drawStyle": "line",
-              "fillOpacity": 0,
-              "gradientMode": "none",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "lineInterpolation": "linear",
-              "lineWidth": 1,
-              "pointSize": 5,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "auto",
-              "spanNulls": false,
-              "stacking": {
-                "group": "A",
-                "mode": "none"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
-            },
-            "mappings": [],
-            "max": 100,
-            "min": 0,
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            },
-            "unit": "percent"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 12,
-          "y": 26
-        },
-        "id": 6,
-        "options": {
-          "legend": {
-            "calcs": [
-              "lastNotNull"
-            ],
-            "displayMode": "list",
-            "placement": "right"
-          },
-          "tooltip": {
-            "mode": "single"
-          }
-        },
-        "pluginVersion": "8.2.5",
-        "targets": [
-          {
-            "format": "time_series",
-            "group": [
-              {
-                "params": [
-                  "5s",
-                  "none"
-                ],
-                "type": "time"
-              },
-              {
-                "params": [
-                  "mac"
-                ],
-                "type": "column"
-              }
-            ],
-            "metricColumn": "mac",
-            "rawQuery": true,
-            "rawSql": "SELECT\n  $__timeGroupAlias(\"timestamp\",5s),\n  sum(usedram*100/totalram) as \"% Ram Used\"\nFROM hostdata\nWHERE\n  $__timeFilter(\"timestamp\") and mac = 'dc:a6:32:98:ef:c7'\nGROUP BY 1\nORDER BY 1",
-            "refId": "A",
-            "select": [
-              [
-                {
-                  "params": [
-                    "totalram"
-                  ],
-                  "type": "column"
-                }
-              ],
-              [
-                {
-                  "params": [
-                    "usedram"
-                  ],
-                  "type": "column"
-                }
-              ]
-            ],
-            "table": "hostdata",
-            "timeColumn": "\"timestamp\"",
-            "timeColumnType": "timestamp",
-            "where": [
-              {
-                "name": "$__timeFilter",
-                "params": [],
-                "type": "macro"
-              }
-            ]
-          }
-        ],
-        "title": "RAM % Use",
-        "transformations": [],
-        "type": "timeseries"
-      },
-      {
-        "datasource": null,
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "axisLabel": "",
-              "axisPlacement": "auto",
-              "barAlignment": 0,
-              "drawStyle": "line",
-              "fillOpacity": 0,
-              "gradientMode": "none",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "lineInterpolation": "linear",
-              "lineWidth": 1,
-              "pointSize": 5,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "auto",
-              "spanNulls": false,
-              "stacking": {
-                "group": "A",
-                "mode": "none"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
-            },
-            "mappings": [],
-            "max": 100,
-            "min": 0,
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            },
-            "unit": "percent"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 0,
-          "y": 34
-        },
-        "id": 8,
-        "options": {
-          "legend": {
-            "calcs": [
-              "lastNotNull"
-            ],
-            "displayMode": "table",
-            "placement": "right"
-          },
-          "tooltip": {
-            "mode": "single"
-          }
-        },
-        "targets": [
-          {
-            "format": "time_series",
-            "group": [],
-            "metricColumn": "none",
-            "rawQuery": false,
-            "rawSql": "SELECT\n  \"timestamp\" AS \"time\",\n  cpupercent AS \"CPU %\"\nFROM hostdata\nWHERE\n  $__timeFilter(\"timestamp\") AND\n  mac = 'dc:a6:32:98:ef:c7'\nORDER BY 1",
-            "refId": "A",
-            "select": [
-              [
-                {
-                  "params": [
-                    "cpupercent"
-                  ],
-                  "type": "column"
-                },
-                {
-                  "params": [
-                    "CPU %"
-                  ],
-                  "type": "alias"
-                }
-              ]
-            ],
-            "table": "hostdata",
-            "timeColumn": "\"timestamp\"",
-            "timeColumnType": "timestamp",
-            "where": [
-              {
-                "name": "$__timeFilter",
-                "params": [],
-                "type": "macro"
-              },
-              {
-                "datatype": "varchar",
-                "name": "",
-                "params": [
-                  "mac",
-                  "=",
-                  "'dc:a6:32:98:ef:c7'"
-                ],
-                "type": "expression"
-              }
-            ]
-          }
-        ],
-        "title": "CPU % Usage",
-        "type": "timeseries"
-      },
-      {
-        "datasource": null,
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "axisLabel": "",
-              "axisPlacement": "auto",
-              "barAlignment": 0,
-              "drawStyle": "line",
-              "fillOpacity": 0,
-              "gradientMode": "none",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "lineInterpolation": "linear",
-              "lineWidth": 1,
-              "pointSize": 5,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "auto",
-              "spanNulls": false,
-              "stacking": {
-                "group": "A",
-                "mode": "none"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            },
-            "unit": "celsius"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 12,
-          "y": 34
-        },
-        "id": 9,
-        "options": {
-          "legend": {
-            "calcs": [
-              "lastNotNull"
-            ],
-            "displayMode": "list",
-            "placement": "right"
-          },
-          "tooltip": {
-            "mode": "single"
-          }
-        },
-        "targets": [
-          {
-            "format": "time_series",
-            "group": [],
-            "metricColumn": "none",
-            "rawQuery": false,
-            "rawSql": "SELECT\n  \"timestamp\" AS \"time\",\n  cputemp AS \"CPU Temp\"\nFROM hostdata\nWHERE\n  $__timeFilter(\"timestamp\") AND\n  mac = 'dc:a6:32:98:ef:c7'\nORDER BY 1",
-            "refId": "A",
-            "select": [
-              [
-                {
-                  "params": [
-                    "cputemp"
-                  ],
-                  "type": "column"
-                },
-                {
-                  "params": [
-                    "CPU Temp"
-                  ],
-                  "type": "alias"
-                }
-              ]
-            ],
-            "table": "hostdata",
-            "timeColumn": "\"timestamp\"",
-            "timeColumnType": "timestamp",
-            "where": [
-              {
-                "name": "$__timeFilter",
-                "params": [],
-                "type": "macro"
-              },
-              {
-                "datatype": "varchar",
-                "name": "",
-                "params": [
-                  "mac",
-                  "=",
-                  "'dc:a6:32:98:ef:c7'"
-                ],
-                "type": "expression"
-              }
-            ]
-          }
-        ],
-        "title": "CPU Temperature",
-        "type": "timeseries"
-      },
-      {
-        "datasource": null,
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "axisLabel": "",
-              "axisPlacement": "auto",
-              "barAlignment": 0,
-              "drawStyle": "line",
-              "fillOpacity": 0,
-              "gradientMode": "none",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "lineInterpolation": "linear",
-              "lineWidth": 1,
-              "pointSize": 5,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "auto",
-              "spanNulls": false,
-              "stacking": {
-                "group": "A",
-                "mode": "none"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            },
-            "unit": "volt"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 0,
-          "y": 42
-        },
-        "id": 11,
-        "options": {
-          "legend": {
-            "calcs": [
-              "lastNotNull"
-            ],
-            "displayMode": "table",
-            "placement": "right"
-          },
-          "tooltip": {
-            "mode": "single"
-          }
-        },
-        "targets": [
-          {
-            "format": "time_series",
-            "group": [],
-            "metricColumn": "none",
-            "rawQuery": false,
-            "rawSql": "SELECT\n  \"timestamp\" AS \"time\",\n  cpuvolts AS \"CPU Voltage\"\nFROM hostdata\nWHERE\n  $__timeFilter(\"timestamp\") AND\n  mac = 'dc:a6:32:98:ef:c7'\nORDER BY 1",
-            "refId": "A",
-            "select": [
-              [
-                {
-                  "params": [
-                    "cpuvolts"
-                  ],
-                  "type": "column"
-                },
-                {
-                  "params": [
-                    "CPU Voltage"
-                  ],
-                  "type": "alias"
-                }
-              ]
-            ],
-            "table": "hostdata",
-            "timeColumn": "\"timestamp\"",
-            "timeColumnType": "timestamp",
-            "where": [
-              {
-                "name": "$__timeFilter",
-                "params": [],
-                "type": "macro"
-              },
-              {
-                "datatype": "varchar",
-                "name": "",
-                "params": [
-                  "mac",
-                  "=",
-                  "'dc:a6:32:98:ef:c7'"
-                ],
-                "type": "expression"
-              }
-            ]
-          }
-        ],
-        "title": "CPU Voltage",
-        "type": "timeseries"
-      },
-      {
-        "datasource": null,
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "axisLabel": "",
-              "axisPlacement": "auto",
-              "barAlignment": 0,
-              "drawStyle": "line",
-              "fillOpacity": 0,
-              "gradientMode": "none",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "lineInterpolation": "linear",
-              "lineWidth": 1,
-              "pointSize": 5,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "auto",
-              "spanNulls": false,
-              "stacking": {
-                "group": "A",
-                "mode": "none"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
+          "properties": [
+            {
+              "id": "custom.width",
+              "value": 129
             }
+          ]
+        },
+        {
+          "matcher": {
+            "id": "byName",
+            "options": "sip"
           },
-          "overrides": []
+          "properties": [
+            {
+              "id": "custom.width",
+              "value": 125
+            }
+          ]
         },
-        "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 12,
-          "y": 42
-        },
-        "id": 19,
-        "options": {
-          "legend": {
-            "calcs": [],
-            "displayMode": "list",
-            "placement": "bottom"
+        {
+          "matcher": {
+            "id": "byName",
+            "options": "dip"
           },
-          "tooltip": {
-            "mode": "single"
-          }
+          "properties": [
+            {
+              "id": "custom.width",
+              "value": 170
+            }
+          ]
         },
-        "targets": [
+        {
+          "matcher": {
+            "id": "byName",
+            "options": "timestamp"
+          },
+          "properties": [
+            {
+              "id": "custom.width",
+              "value": 180
+            }
+          ]
+        },
+        {
+          "matcher": {
+            "id": "byName",
+            "options": "time"
+          },
+          "properties": [
+            {
+              "id": "custom.width",
+              "value": null
+            }
+          ]
+        }
+      ]
+    },
+    "gridPos": {
+      "h": 14,
+      "w": 12,
+      "x": 0,
+      "y": 8
+    },
+    "id": 21,
+    "options": {
+      "showHeader": true,
+      "sortBy": []
+    },
+    "pluginVersion": "8.2.5",
+    "targets": [
+      {
+        "format": "table",
+        "group": [
           {
-            "format": "time_series",
-            "group": [
-              {
-                "params": [
-                  "1m",
-                  "none"
-                ],
-                "type": "time"
-              }
+            "params": [
+              "$__interval",
+              "none"
             ],
-            "metricColumn": "none",
-            "rawQuery": true,
-            "rawSql": "SELECT\n  $__timeGroupAlias(\"timestamp\",1m),\n  sum(label) AS \"label\"\nFROM hostdata\nWHERE\n  $__timeFilter(\"timestamp\") and mac = 'dc:a6:32:98:ef:c7'\nGROUP BY 1\nORDER BY 1",
-            "refId": "A",
-            "select": [
-              [
-                {
-                  "params": [
-                    "label"
-                  ],
-                  "type": "column"
-                },
-                {
-                  "params": [
-                    "sum"
-                  ],
-                  "type": "aggregate"
-                },
-                {
-                  "params": [
-                    "label"
-                  ],
-                  "type": "alias"
-                }
-              ]
-            ],
-            "table": "hostdata",
-            "timeColumn": "\"timestamp\"",
-            "timeColumnType": "timestamp",
-            "where": [
-              {
-                "name": "$__timeFilter",
-                "params": [],
-                "type": "macro"
-              }
-            ]
+            "type": "time"
           }
         ],
-        "title": "Anomalous Host Reports Per Minute",
-        "type": "timeseries"
+        "metricColumn": "none",
+        "rawQuery": true,
+        "rawSql": "SELECT\n \"timestamp\",\n  smac,\n  dmac,\n  sip,\n  dip,\n  sport,\n  dport,\n  label\nFROM networkdata\nwhere \"timestamp\" >= now() - interval '24 hours' and (smac = 'dc:a6:32:98:ef:c7' or dmac = 'dc:a6:32:98:ef:c7') and label = 1\norder by 1 desc\n",
+        "refId": "A",
+        "select": [
+          [
+            {
+              "params": [
+                "label"
+              ],
+              "type": "column"
+            },
+            {
+              "params": [
+                "sum"
+              ],
+              "type": "aggregate"
+            },
+            {
+              "params": [
+                "label"
+              ],
+              "type": "alias"
+            }
+          ]
+        ],
+        "table": "networkdata",
+        "timeColumn": "\"timestamp\"",
+        "timeColumnType": "timestamp",
+        "where": [
+          {
+            "name": "$__timeFilter",
+            "params": [],
+            "type": "macro"
+          }
+        ]
       }
+    ],
+    "title": "Suspicious Packets (Last 24 Hours)",
+    "type": "table"
+  },
+  {
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {
+        "color": {
+          "mode": "palette-classic"
+        },
+        "custom": {
+          "hideFrom": {
+            "legend": false,
+            "tooltip": false,
+            "viz": false
+          }
+        },
+        "mappings": []
+      },
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 7,
+      "w": 12,
+      "x": 12,
+      "y": 8
+    },
+    "id": 25,
+    "interval": "24h",
+    "options": {
+      "legend": {
+        "displayMode": "list",
+        "placement": "bottom"
+      },
+      "pieType": "pie",
+      "reduceOptions": {
+        "calcs": [
+          "lastNotNull"
+        ],
+        "fields": "",
+        "values": false
+      },
+      "tooltip": {
+        "mode": "single"
+      }
+    },
+    "targets": [
+      {
+        "format": "time_series",
+        "group": [
+          {
+            "params": [
+              "$__interval",
+              "0"
+            ],
+            "type": "time"
+          }
+        ],
+        "metricColumn": "dip",
+        "rawQuery": true,
+        "rawSql": "SELECT\n  $__timeGroupAlias(\"timestamp\",24h,0),\n  sip AS metric,\n  count(pk) AS \"pk\"\nFROM networkdata\nWHERE\n  (smac = 'dc:a6:32:98:ef:c7' or dmac = 'dc:a6:32:98:ef:c7') and label = 1 and (sip != '192.168.137.196')\nGROUP BY 1,2\nORDER BY 1,2",
+        "refId": "A",
+        "select": [
+          [
+            {
+              "params": [
+                "pk"
+              ],
+              "type": "column"
+            },
+            {
+              "params": [
+                "count"
+              ],
+              "type": "aggregate"
+            },
+            {
+              "params": [
+                "pk"
+              ],
+              "type": "alias"
+            }
+          ]
+        ],
+        "table": "networkdata",
+        "timeColumn": "\"timestamp\"",
+        "timeColumnType": "timestamp",
+        "where": [
+          {
+            "name": "$__timeFilter",
+            "params": [],
+            "type": "macro"
+          }
+        ]
+      }
+    ],
+    "title": "Suspicious Source IPs (Last 24 Hours) ",
+    "type": "piechart"
+  },
+  {
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {
+        "color": {
+          "mode": "palette-classic"
+        },
+        "custom": {
+          "hideFrom": {
+            "legend": false,
+            "tooltip": false,
+            "viz": false
+          }
+        },
+        "mappings": []
+      },
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 7,
+      "w": 12,
+      "x": 12,
+      "y": 15
+    },
+    "id": 29,
+    "interval": "5m",
+    "options": {
+      "legend": {
+        "displayMode": "list",
+        "placement": "bottom"
+      },
+      "pieType": "pie",
+      "reduceOptions": {
+        "calcs": [
+          "lastNotNull"
+        ],
+        "fields": "",
+        "values": false
+      },
+      "tooltip": {
+        "mode": "single"
+      }
+    },
+    "targets": [
+      {
+        "format": "time_series",
+        "group": [
+          {
+            "params": [
+              "$__interval",
+              "0"
+            ],
+            "type": "time"
+          }
+        ],
+        "metricColumn": "dip",
+        "rawQuery": true,
+        "rawSql": "SELECT\n  $__timeGroupAlias(\"timestamp\",24h,0),\n  smac AS metric,\n  count(pk) AS \"pk\"\nFROM networkdata\nWHERE\n  $__timeFilter(\"timestamp\") and (smac = 'dc:a6:32:98:ef:c7' or dmac = 'dc:a6:32:98:ef:c7') and smac != 'dc:a6:32:98:ef:c7'\nGROUP BY 1,2\nORDER BY 1,2",
+        "refId": "A",
+        "select": [
+          [
+            {
+              "params": [
+                "pk"
+              ],
+              "type": "column"
+            },
+            {
+              "params": [
+                "count"
+              ],
+              "type": "aggregate"
+            },
+            {
+              "params": [
+                "pk"
+              ],
+              "type": "alias"
+            }
+          ]
+        ],
+        "table": "networkdata",
+        "timeColumn": "\"timestamp\"",
+        "timeColumnType": "timestamp",
+        "where": [
+          {
+            "name": "$__timeFilter",
+            "params": [],
+            "type": "macro"
+          }
+        ]
+      }
+    ],
+    "title": "Suspicious Source MACs (Last 24 Hours)",
+    "type": "piechart"
+  },
+  {
+    "collapsed": false,
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 1,
+      "w": 24,
+      "x": 0,
+      "y": 22
+    },
+    "id": 2,
+    "panels": [],
+    "title": "Host Data",
+    "type": "row"
+  },
+  {
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {
+        "color": {
+          "mode": "palette-classic"
+        },
+        "custom": {
+          "axisLabel": "",
+          "axisPlacement": "auto",
+          "barAlignment": 0,
+          "drawStyle": "line",
+          "fillOpacity": 0,
+          "gradientMode": "none",
+          "hideFrom": {
+            "legend": false,
+            "tooltip": false,
+            "viz": false
+          },
+          "lineInterpolation": "linear",
+          "lineWidth": 1,
+          "pointSize": 5,
+          "scaleDistribution": {
+            "type": "linear"
+          },
+          "showPoints": "auto",
+          "spanNulls": false,
+          "stacking": {
+            "group": "A",
+            "mode": "none"
+          },
+          "thresholdsStyle": {
+            "mode": "line+area"
+          }
+        },
+        "mappings": [],
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            },
+            {
+              "color": "red",
+              "value": 5
+            }
+          ]
+        }
+      },
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 7,
+      "w": 12,
+      "x": 0,
+      "y": 23
+    },
+    "id": 19,
+    "options": {
+      "legend": {
+        "calcs": [
+          "lastNotNull"
+        ],
+        "displayMode": "table",
+        "placement": "right"
+      },
+      "tooltip": {
+        "mode": "single"
+      }
+    },
+    "targets": [
+      {
+        "format": "time_series",
+        "group": [
+          {
+            "params": [
+              "1m",
+              "none"
+            ],
+            "type": "time"
+          }
+        ],
+        "metricColumn": "none",
+        "rawQuery": true,
+        "rawSql": "SELECT\n  $__timeGroupAlias(\"timestamp\",$__interval),\n  sum(label) AS \"Alerts\"\nFROM Hostdata\nWHERE\n  $__timeFilter(\"timestamp\") and mac = 'dc:a6:32:98:ef:c7'\nGROUP BY 1\nORDER BY 1",
+        "refId": "A",
+        "select": [
+          [
+            {
+              "params": [
+                "label"
+              ],
+              "type": "column"
+            },
+            {
+              "params": [
+                "sum"
+              ],
+              "type": "aggregate"
+            },
+            {
+              "params": [
+                "label"
+              ],
+              "type": "alias"
+            }
+          ]
+        ],
+        "table": "hostdata",
+        "timeColumn": "\"timestamp\"",
+        "timeColumnType": "timestamp",
+        "where": [
+          {
+            "name": "$__timeFilter",
+            "params": [],
+            "type": "macro"
+          }
+        ]
+      }
+    ],
+    "title": "Anomalous Host Reports Per Minute",
+    "type": "timeseries"
+  },
+  {
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {
+        "color": {
+          "mode": "palette-classic"
+        },
+        "custom": {
+          "axisLabel": "",
+          "axisPlacement": "auto",
+          "barAlignment": 0,
+          "drawStyle": "line",
+          "fillOpacity": 0,
+          "gradientMode": "none",
+          "hideFrom": {
+            "legend": false,
+            "tooltip": false,
+            "viz": false
+          },
+          "lineInterpolation": "linear",
+          "lineWidth": 1,
+          "pointSize": 5,
+          "scaleDistribution": {
+            "type": "linear"
+          },
+          "showPoints": "auto",
+          "spanNulls": false,
+          "stacking": {
+            "group": "A",
+            "mode": "none"
+          },
+          "thresholdsStyle": {
+            "mode": "off"
+          }
+        },
+        "mappings": [],
+        "max": 100,
+        "min": 0,
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        },
+        "unit": "percent"
+      },
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 6,
+      "w": 12,
+      "x": 12,
+      "y": 23
+    },
+    "id": 6,
+    "options": {
+      "legend": {
+        "calcs": [
+          "lastNotNull"
+        ],
+        "displayMode": "list",
+        "placement": "right"
+      },
+      "tooltip": {
+        "mode": "single"
+      }
+    },
+    "pluginVersion": "8.2.5",
+    "targets": [
+      {
+        "format": "time_series",
+        "group": [
+          {
+            "params": [
+              "5s",
+              "none"
+            ],
+            "type": "time"
+          },
+          {
+            "params": [
+              "mac"
+            ],
+            "type": "column"
+          }
+        ],
+        "metricColumn": "mac",
+        "rawQuery": true,
+        "rawSql": "SELECT\n  $__timeGroupAlias(\"timestamp\",5s),\n  sum(usedram*100/totalram) as \"% Ram Used\"\nFROM hostdata\nWHERE\n  $__timeFilter(\"timestamp\") and mac = 'dc:a6:32:98:ef:c7'\nGROUP BY 1\nORDER BY 1",
+        "refId": "A",
+        "select": [
+          [
+            {
+              "params": [
+                "totalram"
+              ],
+              "type": "column"
+            }
+          ],
+          [
+            {
+              "params": [
+                "usedram"
+              ],
+              "type": "column"
+            }
+          ]
+        ],
+        "table": "hostdata",
+        "timeColumn": "\"timestamp\"",
+        "timeColumnType": "timestamp",
+        "where": [
+          {
+            "name": "$__timeFilter",
+            "params": [],
+            "type": "macro"
+          }
+        ]
+      }
+    ],
+    "title": "RAM % Use",
+    "transformations": [],
+    "type": "timeseries"
+  },
+  {
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {
+        "color": {
+          "mode": "palette-classic"
+        },
+        "custom": {
+          "axisLabel": "",
+          "axisPlacement": "auto",
+          "barAlignment": 0,
+          "drawStyle": "line",
+          "fillOpacity": 0,
+          "gradientMode": "none",
+          "hideFrom": {
+            "legend": false,
+            "tooltip": false,
+            "viz": false
+          },
+          "lineInterpolation": "linear",
+          "lineWidth": 1,
+          "pointSize": 5,
+          "scaleDistribution": {
+            "type": "linear"
+          },
+          "showPoints": "auto",
+          "spanNulls": false,
+          "stacking": {
+            "group": "A",
+            "mode": "none"
+          },
+          "thresholdsStyle": {
+            "mode": "off"
+          }
+        },
+        "mappings": [],
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        },
+        "unit": "celsius"
+      },
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 7,
+      "w": 12,
+      "x": 12,
+      "y": 29
+    },
+    "id": 9,
+    "options": {
+      "legend": {
+        "calcs": [
+          "lastNotNull"
+        ],
+        "displayMode": "list",
+        "placement": "right"
+      },
+      "tooltip": {
+        "mode": "single"
+      }
+    },
+    "targets": [
+      {
+        "format": "time_series",
+        "group": [],
+        "metricColumn": "none",
+        "rawQuery": false,
+        "rawSql": "SELECT\n  \"timestamp\" AS \"time\",\n  cputemp AS \"CPU Temp\"\nFROM hostdata\nWHERE\n  $__timeFilter(\"timestamp\") AND\n  mac = 'dc:a6:32:98:ef:c7'\nORDER BY 1",
+        "refId": "A",
+        "select": [
+          [
+            {
+              "params": [
+                "cputemp"
+              ],
+              "type": "column"
+            },
+            {
+              "params": [
+                "CPU Temp"
+              ],
+              "type": "alias"
+            }
+          ]
+        ],
+        "table": "hostdata",
+        "timeColumn": "\"timestamp\"",
+        "timeColumnType": "timestamp",
+        "where": [
+          {
+            "name": "$__timeFilter",
+            "params": [],
+            "type": "macro"
+          },
+          {
+            "datatype": "varchar",
+            "name": "",
+            "params": [
+              "mac",
+              "=",
+              "'dc:a6:32:98:ef:c7'"
+            ],
+            "type": "expression"
+          }
+        ]
+      }
+    ],
+    "title": "CPU Temperature",
+    "type": "timeseries"
+  },
+  {
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {
+        "color": {
+          "mode": "palette-classic"
+        },
+        "custom": {
+          "hideFrom": {
+            "legend": false,
+            "tooltip": false,
+            "viz": false
+          }
+        },
+        "mappings": []
+      },
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 6,
+      "w": 12,
+      "x": 0,
+      "y": 30
+    },
+    "id": 4,
+    "options": {
+      "legend": {
+        "displayMode": "table",
+        "placement": "right",
+        "values": [
+          "value"
+        ]
+      },
+      "pieType": "pie",
+      "reduceOptions": {
+        "calcs": [
+          "lastNotNull"
+        ],
+        "fields": "",
+        "values": false
+      },
+      "tooltip": {
+        "mode": "single"
+      }
+    },
+    "pluginVersion": "8.2.5",
+    "targets": [
+      {
+        "format": "table",
+        "group": [],
+        "metricColumn": "none",
+        "rawQuery": true,
+        "rawSql": "SELECT\n  \"timestamp\" AS \"time\",\n  runningtasks,\n  stoppedtasks,\n  sleepingtasks,\n  zombietasks\nFROM hostdata\nWHERE\n  $__timeFilter(\"timestamp\") AND\n  mac = 'dc:a6:32:98:ef:c7'\nORDER BY 1",
+        "refId": "A",
+        "select": [
+          [
+            {
+              "params": [
+                "runningtasks"
+              ],
+              "type": "column"
+            }
+          ],
+          [
+            {
+              "params": [
+                "stoppedtasks"
+              ],
+              "type": "column"
+            }
+          ],
+          [
+            {
+              "params": [
+                "sleepingtasks"
+              ],
+              "type": "column"
+            }
+          ],
+          [
+            {
+              "params": [
+                "zombietasks"
+              ],
+              "type": "column"
+            }
+          ]
+        ],
+        "table": "hostdata",
+        "timeColumn": "\"timestamp\"",
+        "timeColumnType": "timestamp",
+        "where": [
+          {
+            "name": "$__timeFilter",
+            "params": [],
+            "type": "macro"
+          },
+          {
+            "datatype": "varchar",
+            "name": "",
+            "params": [
+              "mac",
+              "=",
+              "'dc:a6:32:98:ef:c7'"
+            ],
+            "type": "expression"
+          }
+        ]
+      }
+    ],
+    "title": "Task Distribution",
+    "type": "piechart"
+  },
+  {
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {
+        "color": {
+          "mode": "palette-classic"
+        },
+        "custom": {
+          "axisLabel": "",
+          "axisPlacement": "auto",
+          "barAlignment": 0,
+          "drawStyle": "line",
+          "fillOpacity": 0,
+          "gradientMode": "none",
+          "hideFrom": {
+            "legend": false,
+            "tooltip": false,
+            "viz": false
+          },
+          "lineInterpolation": "linear",
+          "lineWidth": 1,
+          "pointSize": 5,
+          "scaleDistribution": {
+            "type": "linear"
+          },
+          "showPoints": "auto",
+          "spanNulls": false,
+          "stacking": {
+            "group": "A",
+            "mode": "none"
+          },
+          "thresholdsStyle": {
+            "mode": "off"
+          }
+        },
+        "mappings": [],
+        "max": 100,
+        "min": 0,
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        },
+        "unit": "percent"
+      },
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 7,
+      "w": 12,
+      "x": 0,
+      "y": 36
+    },
+    "id": 8,
+    "options": {
+      "legend": {
+        "calcs": [
+          "lastNotNull"
+        ],
+        "displayMode": "table",
+        "placement": "right"
+      },
+      "tooltip": {
+        "mode": "single"
+      }
+    },
+    "targets": [
+      {
+        "format": "time_series",
+        "group": [],
+        "metricColumn": "none",
+        "rawQuery": false,
+        "rawSql": "SELECT\n  \"timestamp\" AS \"time\",\n  cpupercent AS \"CPU %\"\nFROM hostdata\nWHERE\n  $__timeFilter(\"timestamp\") AND\n  mac = 'dc:a6:32:98:ef:c7'\nORDER BY 1",
+        "refId": "A",
+        "select": [
+          [
+            {
+              "params": [
+                "cpupercent"
+              ],
+              "type": "column"
+            },
+            {
+              "params": [
+                "CPU %"
+              ],
+              "type": "alias"
+            }
+          ]
+        ],
+        "table": "hostdata",
+        "timeColumn": "\"timestamp\"",
+        "timeColumnType": "timestamp",
+        "where": [
+          {
+            "name": "$__timeFilter",
+            "params": [],
+            "type": "macro"
+          },
+          {
+            "datatype": "varchar",
+            "name": "",
+            "params": [
+              "mac",
+              "=",
+              "'dc:a6:32:98:ef:c7'"
+            ],
+            "type": "expression"
+          }
+        ]
+      }
+    ],
+    "title": "CPU % Usage",
+    "type": "timeseries"
+  },
+  {
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {
+        "color": {
+          "mode": "palette-classic"
+        },
+        "custom": {
+          "axisLabel": "",
+          "axisPlacement": "auto",
+          "barAlignment": 0,
+          "drawStyle": "line",
+          "fillOpacity": 0,
+          "gradientMode": "none",
+          "hideFrom": {
+            "legend": false,
+            "tooltip": false,
+            "viz": false
+          },
+          "lineInterpolation": "linear",
+          "lineWidth": 1,
+          "pointSize": 5,
+          "scaleDistribution": {
+            "type": "linear"
+          },
+          "showPoints": "auto",
+          "spanNulls": false,
+          "stacking": {
+            "group": "A",
+            "mode": "none"
+          },
+          "thresholdsStyle": {
+            "mode": "off"
+          }
+        },
+        "mappings": [],
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        },
+        "unit": "volt"
+      },
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 7,
+      "w": 12,
+      "x": 12,
+      "y": 36
+    },
+    "id": 11,
+    "options": {
+      "legend": {
+        "calcs": [
+          "lastNotNull"
+        ],
+        "displayMode": "table",
+        "placement": "right"
+      },
+      "tooltip": {
+        "mode": "single"
+      }
+    },
+    "targets": [
+      {
+        "format": "time_series",
+        "group": [],
+        "metricColumn": "none",
+        "rawQuery": false,
+        "rawSql": "SELECT\n  \"timestamp\" AS \"time\",\n  cpuvolts AS \"CPU Voltage\"\nFROM hostdata\nWHERE\n  $__timeFilter(\"timestamp\") AND\n  mac = 'dc:a6:32:98:ef:c7'\nORDER BY 1",
+        "refId": "A",
+        "select": [
+          [
+            {
+              "params": [
+                "cpuvolts"
+              ],
+              "type": "column"
+            },
+            {
+              "params": [
+                "CPU Voltage"
+              ],
+              "type": "alias"
+            }
+          ]
+        ],
+        "table": "hostdata",
+        "timeColumn": "\"timestamp\"",
+        "timeColumnType": "timestamp",
+        "where": [
+          {
+            "name": "$__timeFilter",
+            "params": [],
+            "type": "macro"
+          },
+          {
+            "datatype": "varchar",
+            "name": "",
+            "params": [
+              "mac",
+              "=",
+              "'dc:a6:32:98:ef:c7'"
+            ],
+            "type": "expression"
+          }
+        ]
+      }
+    ],
+    "title": "CPU Voltage",
+    "type": "timeseries"
+  }
 ]
